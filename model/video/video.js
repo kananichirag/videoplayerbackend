@@ -10,6 +10,9 @@ const videoSchema = new mongoose.Schema({
   image: {
     type: String,
   },
+  url: {
+    type: String,
+  },
 });
 
 const modal = new mongoose.model('Video', videoSchema);

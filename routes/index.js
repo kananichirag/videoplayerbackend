@@ -29,29 +29,24 @@ router.post(
     { name: 'video', maxCount: 1 },
   ]),
   async function (req, res, next) {
-    console.log(req.body);
     try {
-      // Check if both image and video files are uploaded
       if (!req.files || !req.files['image'] || !req.files['video']) {
         return res
           .status(400)
           .json({ message: 'Please upload both an image and a video.' });
       }
 
-      // Extract filenames of the uploaded image and video files
       const uploadedImage = req.files['image'][0].filename;
       const uploadedVideo = req.files['video'][0].filename;
 
-      // Create a new model instance with image and video filenames
       let result = await model.create({
         image: uploadedImage,
         video: uploadedVideo,
         name: req.body.name,
-        // Add other fields from req.body as needed
       });
 
       let url = 'https://goog.com/' + result._id;
-
+      await model.findByIdAndUpdate(result._id, { url: url });
       return res.status(201).json({
         status: true,
         message: 'File uploaded successfully.',
